@@ -1,5 +1,7 @@
-import React from 'react';
+// import React from 'react';
 import './App.css';
+import React, { useEffect } from "react";
+// import Chart from "chart.js";
 
 import {
   BrowserRouter as Router,
@@ -14,8 +16,8 @@ import Footer from './Footer/Footer';
 import AboutPage from './AboutPage/AboutPage';
 import LoginPage from './LoginPage/LoginPage';
 
-
 function App() {
+  
   return (
     <Router>
       <Menu/>
@@ -29,7 +31,8 @@ function App() {
             <LoginPage/>
           </Route>
           <Route path="/">
-            <HomePage/>
+            <HomePage>
+            </HomePage>
           </Route>
         </Switch>
       </div>
