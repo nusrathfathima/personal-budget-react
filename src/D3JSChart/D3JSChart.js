@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import * as d3 from "d3";
+import axios from "axios";
 
-const Arc = ({ data, index, createArc, colors, format }) => (
+const Arc = ({ data, index, createArc, colors, label }) => (
   <g key={index} className="arc">
     <path className="arc" d={createArc(data)} fill={colors(index)} />
     <text
@@ -11,49 +12,49 @@ const Arc = ({ data, index, createArc, colors, format }) => (
       fill="white"
       fontSize="10"
     >
-      {format(data.value)}
+      {label}
     </text>
   </g>
 );
-
 const D3JSChart = () => {
-//     const generateData = (value, length = 5) =>
-//     d3.range(length).map((item, index) => ({
-//         date: index,
-//         value: value === null || value === undefined ? Math.random() * 100 : value
-//   }));
-//   console.log(generateData());
 
-  const inputValues = [
+  const test_data = [
     {label: "A", value: 100},
     {label: "B", value: 200},
     {label: "C", value: 300},
     {label: "D", value: 400},
     {label: "E", value: 500},
+    {label: "F", value: 600},
+    {label: "G", value: 700},
   ]
 
-//   const [inputData, setData] = useState(inputValues);
-
-//   console.log(useState(inputValues));
-
-//   useEffect(
-//     () => {
-//       setData(inputValues);
-//     }
-//     // [!inputData]
-//   );
+  axios({
+    method: "get",
+    url: "http://localhost:4000/budget",
+  }).then(response => {
+    var inputValues = [];
+    for (var i = 0; i<response.data.myBudget.length; i++) {
+      inputValues.push( 
+        {
+          label: response.data.myBudget[i].title,
+          value: response.data.myBudget[i].budget
+        })
+    }
+  })
+  .catch(error => {
+    console.log(error);
+  });
 
   const createPie = d3
-    .pie()
-    .value(d => d.value)
-    .sort(null);
+  .pie()
+  .value(d => d.value)
+  .sort(null);
   const createArc = d3
-    .arc()
-    .innerRadius(100)
-    .outerRadius(200);
+  .arc()
+  .innerRadius(100)
+  .outerRadius(200);
   const colors = d3.scaleOrdinal(d3.schemeCategory10);
-  const format = d3.format(".2f");
-  const data = createPie(inputValues);
+  const data = createPie(test_data);
 
   return (
     <svg width={200} height={200}>
@@ -65,7 +66,7 @@ const D3JSChart = () => {
             index={i}
             createArc={createArc}
             colors={colors}
-            format={format}
+            label={d.data.label}
           />
         ))}
       </g>

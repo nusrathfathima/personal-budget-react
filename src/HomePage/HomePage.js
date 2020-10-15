@@ -60,7 +60,7 @@ function HomePage() {
                         What if your clothing budget ended? You will get an alert. The goal is to never go over the budget.
                     </p>
                 </header>
-                <header className="text-box">                
+                <header className="text-box">
                     <h1>D3JS Chart</h1>
                     <div id="D3JSChart">
                         <D3JSChart/>

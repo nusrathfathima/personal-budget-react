@@ -1,13 +1,16 @@
 import React, { useEffect } from "react";
 import Chart from "chart.js";
-import { getChartData } from "../Axios/Axiosdata";
+// import myBudget from "../../server/myBudget";
+// import { getChartData } from "../Axios/Axiosdata";
+import axios from "axios";
+
 
 // import "./styles.css";
-
 const data = {
   datasets: [
       {
-          data: [1,2,3,4,5,6,7],
+          // data: [1,2,3,4,5,6,7],
+          data: [],
           backgroundColor: [
               '#ffcd56',
               '#ff6384',
@@ -19,19 +22,31 @@ const data = {
           ],
       }
   ],
-  labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"]
+  labels: []
+  // labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"]
 }
 
 export default function ChartJS() {
   useEffect(() => {
     const ctx = document.getElementById("myChart");
 
-    console.log(getChartData());
-
-    new Chart(ctx, {
-      type: "pie",
-      data: data
+    axios({
+      method: "get",
+      url: "http://localhost:4000/budget",
+    }).then(response => {
+      for (var i = 0; i<response.data.myBudget.length; i++) {
+        data.datasets[0].data[i] = response.data.myBudget[i].budget;
+        data.labels[i] = response.data.myBudget[i].title;
+      }
+      new Chart(ctx, {
+        type: "pie",
+        data: data
       });
+    })
+    .catch(error => {
+      console.log(error);
+    });
+    
   });
   return (  
       <canvas id="myChart" width="400" height="400" />
