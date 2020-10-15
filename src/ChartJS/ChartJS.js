@@ -49,6 +49,6 @@ export default function ChartJS() {
     
   });
   return (  
-      <canvas id="myChart" width="400" height="400" />
+      <canvas id="myChart" width="500" height="500" />
   );
 }
